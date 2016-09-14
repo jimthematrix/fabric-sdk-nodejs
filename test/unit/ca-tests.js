@@ -33,48 +33,6 @@ var keyValStorePath2 = keyValStorePath + "2";
 // Run the registrar test
 //
 test('registrar test', function(t) {
-    var chain = hfc.newChain("testChain");
-    var expect = "";
-    var found = "";
-    var webUser;
-
-    chain.setKeyValStore(hfc.newKeyValueStore(keyValStorePath));
-    chain.setMemberServicesUrl("grpc://localhost:7054");
-
-    return chain.enroll("admin", "Xurw3yU9zI0l")
-    .then(
-        function(admin) {
-            t.pass("Successfully enrolled user 'admin'");
-            t.end();
-            // chain.setRegistrar(admin);
-
-            // // Register and enroll webAdmin
-            // return registerAndEnroll("webAdmin", "client", { roles: ['client'] }, chain);
-        },
-        function(err) {
-            t.fail("Failed to enroll user 'admin'. " + err);
-            t.end();
-        }
-    );
-});
-
-//
-// Run the registrar test
-//
-// test('enroll again', function(t) {
-//     enrollAgain(function(err) {
-//         if (err) {
-//             fail(t, "enrollAgain", err);
-//         } else {
-//             pass(t, "enrollAgain");
-//         }
-
-//         t.end();
-//     });
-// });
-
-// The registrar test
-function registrarTest(t) {
     //
     // Create and configure the test chain
     //
@@ -139,51 +97,66 @@ function registrarTest(t) {
             }
 
             t.pass("Successfully tested failed registration of auditors");
-
-            return registerAndEnroll("validator", "validator", null, chain);
-        }
-    ).then(
-        function(validator) {
-            t.fail("webAmin is not expected to be able to register members of type 'validator'");
-            t.end();
-        },
-        function(err) {
-            expect = "webAdmin may not register member of type validator";
-            found = (err.toString()).match(expect);
-
-            if (!(found == expect)) {
-                t.fail("Error message does not match expected message when registration failed");
-                t.end();
-            }
-
-            t.pass("Successfully tested failed registration of validators");
-            
-            chain.setRegistrar(webUser);
-
-            return registerAndEnroll("webUser2", "client", null, chain);
-        }
-    ).then(
-        function(webUser) {
-            t.fail("webUser is not expected to be able to register members of type 'client'");
-            t.end();
-        },
-        function(err) {
-            expect = "webUser may not register member of type client";
-            found = (err.toString()).match(expect);
-            if (!(found == expect)) {
-                t.fail("Error message does not match expected message when registration failed");
-                t.end();
-            }
-
-            t.pass("Successfully tested failed registration of clients");
-            t.end();
+t.end();
+            // return registerAndEnroll("validator", "validator", null, chain);
         }
     );
-}
+    // .then(
+    //     function(validator) {
+    //         t.fail("webAmin is not expected to be able to register members of type 'validator'");
+    //         t.end();
+    //     },
+    //     function(err) {
+    //         expect = "webAdmin may not register member of type validator";
+    //         found = (err.toString()).match(expect);
+
+    //         if (!(found == expect)) {
+    //             t.fail("Error message does not match expected message when registration failed");
+    //             t.end();
+    //         }
+
+    //         t.pass("Successfully tested failed registration of validators");
+            
+    //         chain.setRegistrar(webUser);
+
+    //         return registerAndEnroll("webUser2", "client", null, chain);
+    //     }
+    // ).then(
+    //     function(webUser) {
+    //         t.fail("webUser is not expected to be able to register members of type 'client'");
+    //         t.end();
+    //     },
+    //     function(err) {
+    //         expect = "webUser may not register member of type client";
+    //         found = (err.toString()).match(expect);
+    //         if (!(found == expect)) {
+    //             t.fail("Error message does not match expected message when registration failed");
+    //             t.end();
+    //         }
+
+    //         t.pass("Successfully tested failed registration of clients");
+    //         t.end();
+    //     }
+    // );
+});
+
+//
+// Run the registrar test
+//
+// test('enroll again', function(t) {
+//     enrollAgain(function(err) {
+//         if (err) {
+//             fail(t, "enrollAgain", err);
+//         } else {
+//             pass(t, "enrollAgain");
+//         }
+
+//         t.end();
+//     });
+// });
 
 // Register and enroll user 'name' with role 'r' with registrar info 'registrar' for chain 'chain'
-function registerAndEnroll(name, r, registrar, chain, cb) {
-    console.log("registerAndEnroll %s", name);
+function registerAndEnroll(name, r, registrar, chain) {
     // User is not enrolled yet, so perform both registration and enrollment
     var registrationRequest = {
         roles: [r],
@@ -191,7 +164,7 @@ function registerAndEnroll(name, r, registrar, chain, cb) {
         affiliation: "bank_a",
         registrar: registrar
     };
-    chain.registerAndEnroll(registrationRequest, cb);
+    return chain.registerAndEnroll(registrationRequest);
 }
 
 // Force the client to try to enroll admin again by creating a different chain

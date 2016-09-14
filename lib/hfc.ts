@@ -1039,30 +1039,6 @@ function isFunction(fcn:any):boolean {
     return (typeof fcn === 'function');
 }
 
-// Convert a list of member type names to the role mask currently used by the peer
-function rolesToMask(roles?:string[]):number {
-    let mask:number = 0;
-    if (roles) {
-        for (let role in roles) {
-            switch (roles[role]) {
-                case 'client':
-                    mask |= 1;
-                    break;       // Client mask
-                case 'peer':
-                    mask |= 2;
-                    break;       // Peer mask
-                case 'validator':
-                    mask |= 4;
-                    break;  // Validator mask
-                case 'auditor':
-                    mask |= 8;
-                    break;    // Auditor mask
-            }
-        }
-    }
-    if (mask === 0) mask = 1;  // Client
-    return mask;
-}
 
 function endsWith(str:string, suffix:string) {
     return str.length >= suffix.length && str.substr(str.length - suffix.length) === suffix;
