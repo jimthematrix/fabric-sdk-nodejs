@@ -138,20 +138,35 @@ test('registrar test', function(t) {
     );
 });
 
-//
-// Run the registrar test
-//
-// test('enroll again', function(t) {
-//     enrollAgain(function(err) {
-//         if (err) {
-//             fail(t, "enrollAgain", err);
-//         } else {
-//             pass(t, "enrollAgain");
-//         }
 
-//         t.end();
-//     });
-// });
+// Run the registrar test
+
+test('enroll again', function(t) {
+    //
+    // Remove the file-based keyValStore
+    // Create and configure testChain2 so there is no shared state with testChain
+    // This is necessary to start without a local cache.
+    //
+    fs.renameSync(keyValStorePath, keyValStorePath2);
+    var chain = hfc.newChain("testChain2");
+    chain.setKeyValStore(hfc.newKeyValueStore('/tmp/keyValStore'));
+    chain.setMemberServicesUrl("grpc://localhost:7054");
+    chain.enroll("admin", "Xurw3yU9zI0l")
+    .then(
+        function(admin) {
+            rmdir(keyValStorePath);
+            fs.renameSync(keyValStorePath2, keyValStorePath);
+            t.fail(new Error("admin should not be allowed to re-enroll"));
+            t.end();
+        },
+        function(err) {
+            rmdir(keyValStorePath);
+            fs.renameSync(keyValStorePath2, keyValStorePath);
+            t.pass("Successfully tested failed re-enrollment on admin");
+            t.end();
+        }
+    );
+});
 
 // Register and enroll user 'name' with role 'r' with registrar info 'registrar' for chain 'chain'
 function registerAndEnroll(name, r, registrar, chain) {
@@ -163,27 +178,6 @@ function registerAndEnroll(name, r, registrar, chain) {
         registrar: registrar
     };
     return chain.registerAndEnroll(registrationRequest);
-}
-
-// Force the client to try to enroll admin again by creating a different chain
-// This should fail.
-function enrollAgain(cb) {
-    console.log("enrollAgain");
-    //
-    // Remove the file-based keyValStore
-    // Create and configure testChain2 so there is no shared state with testChain
-    // This is necessary to start without a local cache.
-    //
-    fs.renameSync(keyValStorePath, keyValStorePath2);
-    var chain = hfc.newChain("testChain2");
-    chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));
-    chain.setMemberServicesUrl("grpc://localhost:7054");
-    chain.enroll("admin", "Xurw3yU9zI0l", function(err, admin) {
-        rmdir(keyValStorePath);
-        fs.renameSync(keyValStorePath2, keyValStorePath);
-        if (!err) return cb(Error("admin should not be allowed to re-enroll"));
-        return cb();
-    });
 }
 
 function rmdir(path) {
