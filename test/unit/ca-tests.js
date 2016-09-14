@@ -93,51 +93,49 @@ test('registrar test', function(t) {
 
             if (!(found == expect)) {
                 t.fail("Error message does not match expected message when registration failed");
-                t.end();
             }
 
             t.pass("Successfully tested failed registration of auditors");
-t.end();
-            // return registerAndEnroll("validator", "validator", null, chain);
+
+            return registerAndEnroll("validator", "validator", null, chain);
+        }
+    ).then(
+        function(validator) {
+            t.fail("webAmin is not expected to be able to register members of type 'validator'");
+            t.end();
+        },
+        function(err) {
+            expect = "webAdmin may not register member of type validator";
+            found = (err.toString()).match(expect);
+
+            if (!(found == expect)) {
+                t.fail("Error message does not match expected message when registration failed");
+                t.end();
+            }
+
+            t.pass("Successfully tested failed registration of validators");
+            
+            chain.setRegistrar(webUser);
+
+            return registerAndEnroll("webUser2", "client", null, chain);
+        }
+    ).then(
+        function(webUser) {
+            t.fail("webUser is not expected to be able to register members of type 'client'");
+            t.end();
+        },
+        function(err) {
+            expect = "webUser may not register member of type client";
+            found = (err.toString()).match(expect);
+            if (!(found == expect)) {
+                t.fail("Error message does not match expected message when registration failed");
+                t.end();
+            }
+
+            t.pass("Successfully tested failed registration of clients");
+            t.end();
         }
     );
-    // .then(
-    //     function(validator) {
-    //         t.fail("webAmin is not expected to be able to register members of type 'validator'");
-    //         t.end();
-    //     },
-    //     function(err) {
-    //         expect = "webAdmin may not register member of type validator";
-    //         found = (err.toString()).match(expect);
-
-    //         if (!(found == expect)) {
-    //             t.fail("Error message does not match expected message when registration failed");
-    //             t.end();
-    //         }
-
-    //         t.pass("Successfully tested failed registration of validators");
-            
-    //         chain.setRegistrar(webUser);
-
-    //         return registerAndEnroll("webUser2", "client", null, chain);
-    //     }
-    // ).then(
-    //     function(webUser) {
-    //         t.fail("webUser is not expected to be able to register members of type 'client'");
-    //         t.end();
-    //     },
-    //     function(err) {
-    //         expect = "webUser may not register member of type client";
-    //         found = (err.toString()).match(expect);
-    //         if (!(found == expect)) {
-    //             t.fail("Error message does not match expected message when registration failed");
-    //             t.end();
-    //         }
-
-    //         t.pass("Successfully tested failed registration of clients");
-    //         t.end();
-    //     }
-    // );
 });
 
 //
