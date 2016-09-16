@@ -41,7 +41,7 @@ var chain = hfc.newChain("testChain");
 // to be used to authenticate the member services certificate.
 //
 
-chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));
+chain.setKeyValueStore(hfc.newFileKeyValueStore('/tmp/keyValStore'));
 if (fs.existsSync("tlsca.cert")) {
     chain.setMemberServicesUrl("grpcs://localhost:7054", fs.readFileSync('tlsca.cert'));
 } else {
@@ -274,7 +274,7 @@ test('Enroll WebAppAdmin', function (t) {
                     t.pass("Successfully enrolled WebAppAdmin member" /*+ " ---> " + JSON.stringify(crypto)*/);
 
                     // Confirm that the WebAppAdmin token has been created in the key value store
-                    path = chain.getKeyValStore().dir + "/member." + WebAppAdmin.getName();
+                    path = chain.getKeyValueStore().dir + "/member." + WebAppAdmin.getName();
 
                     fs.exists(path, function (exists) {
                         if (exists) {
@@ -340,7 +340,7 @@ test('Register and enroll a new user', function (t) {
             t.pass("Successfully registered and enrolled " + test_user_Member1.getName());
 
             // Confirm that the user token has been created in the key value store
-            path = chain.getKeyValStore().dir + "/member." + test_user1.name;
+            path = chain.getKeyValueStore().dir + "/member." + test_user1.name;
             fs.exists(path, function (exists) {
                 if (exists) {
                     t.pass("Successfully stored client token" /*+ " ---> " + test_user1.name*/);

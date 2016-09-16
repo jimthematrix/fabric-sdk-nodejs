@@ -38,7 +38,7 @@ var devMode = process.env.DEPLOY_MODE == 'dev';
 function setup(cb) {
    console.log("initializing ...");
    var chain = hfc.newChain("testChain");
-   chain.setKeyValStore(hfc.newFileKeyValStore("/tmp/keyValStore"));
+   chain.setKeyValueStore(hfc.newFileKeyValueStore("/tmp/keyValStore"));
    chain.setMemberServicesUrl("grpc://localhost:7054");
    chain.addPeer("grpc://localhost:7051");
    if (devMode) chain.setDevMode(true);

@@ -28,30 +28,30 @@ var grpc = require('grpc');
 var _fabricProto = grpc.load("../../lib/protos/fabric.proto").protos;
 var _chaincodeProto = grpc.load("../../lib/protos/chaincode.proto").protos;
 
-// FileKeyValStore tests /////////////
-var FileKeyValStore = require('../../lib/FileKeyValueStore.js');
+// FileKeyValueStore tests /////////////
+var FileKeyValueStore = require('../../lib/FileKeyValueStore.js');
 
 var keyValStorePath = path.join(getUserHome(), "kvsTemp");
 var testKey = "keyValFileStoreName";
 var testValue = "secretKeyValue";
-// End: FileKeyValStore tests ////////
+// End: FileKeyValueStore tests ////////
 
 // Chain tests /////////////
-var Chain = require('../../lib/Chain.js');
-var chainName = "testChain";
+// var Chain = require('../../lib/Chain.js');
+// var chainName = "testChain";
 
 // End: Chain tests ////////
 
 // Peer tests ////////
-var Peer = require('../../lib/Peer.js');
-var EventEmitter = require('events');
+// var Peer = require('../../lib/Peer.js');
+// var EventEmitter = require('events');
 // End: Peer tests ////////
 
 
 //
-// Run the FileKeyValStore test
+// Run the FileKeyValueStore test
 //
-test('FileKeyValStore read and write test', function(t) {
+test('FileKeyValueStore read and write test', function(t) {
     // clean up
     fs.existsSync(keyValStorePath, (exists) => {
         if (exists) {
@@ -59,7 +59,7 @@ test('FileKeyValStore read and write test', function(t) {
         }
     });
 
-    var store = new FileKeyValStore(keyValStorePath);
+    var store = new FileKeyValueStore(keyValStorePath);
 
     fs.exists(keyValStorePath, (exists) => {
         if (exists)
@@ -108,33 +108,33 @@ test('FileKeyValStore read and write test', function(t) {
     t.end();
 });
 
-test('Chain test', function(t) {
-    var chain = new Chain(chainName);
+// test('Chain test', function(t) {
+//     var chain = new Chain(chainName);
 
-    t.end();
-});
+//     t.end();
+// });
 
-test('Peer test', function(t) {
-    var peer = new Peer("grpc://localhost:7051");
+// test('Peer test', function(t) {
+//     var peer = new Peer("grpc://localhost:7051");
 
-    var emitter = new EventEmitter();
-    emitter.on("submitted", function(data) {
-        t.pass("Successfully submitted transaction. " + data);
-        t.end();
-    });
-    emitter.on("error", function(err) {
-        t.fail("ERROR! " + err);
-        t.end();
-    });
+//     var emitter = new EventEmitter();
+//     emitter.on("submitted", function(data) {
+//         t.pass("Successfully submitted transaction. " + data);
+//         t.end();
+//     });
+//     emitter.on("error", function(err) {
+//         t.fail("ERROR! " + err);
+//         t.end();
+//     });
 
-    peer.sendTransaction(
-        newDevModeDeployTransaction({
-            chaincodeName: "mycc",
-            fcn: "init",
-            args: ["a", "100", "b", "200"]
-        }), 
-        emitter);
-});
+//     peer.sendTransaction(
+//         newDevModeDeployTransaction({
+//             chaincodeName: "mycc",
+//             fcn: "init",
+//             args: ["a", "100", "b", "200"]
+//         }), 
+//         emitter);
+// });
 
 function getUserHome() {
   return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];

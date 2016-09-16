@@ -41,7 +41,7 @@ test('registrar test', function(t) {
     var found = "";
     var webUser;
 
-    chain.setKeyValStore(hfc.newKeyValueStore(keyValStorePath));
+    chain.setKeyValueStore(hfc.newKeyValueStore(keyValStorePath));
     chain.setMemberServicesUrl("grpc://localhost:7054");
 
     chain.enroll("admin", "Xurw3yU9zI0l")
@@ -149,7 +149,7 @@ test('enroll again', function(t) {
     //
     fs.renameSync(keyValStorePath, keyValStorePath2);
     var chain = hfc.newChain("testChain2");
-    chain.setKeyValStore(hfc.newKeyValueStore('/tmp/keyValStore'));
+    chain.setKeyValueStore(hfc.newKeyValueStore('/tmp/keyValStore'));
     chain.setMemberServicesUrl("grpc://localhost:7054");
     chain.enroll("admin", "Xurw3yU9zI0l")
     .then(

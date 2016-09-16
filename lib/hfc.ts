@@ -34,8 +34,8 @@
  *
  * These APIs have been designed to support two pluggable components.
  * 1) Pluggable key value store which is used to retrieve and store keys associated with a member.
- *    Call Chain.setKeyValStore() to override the default key value store implementation.
- *    For the default implementations, see FileKeyValStore and SqlKeyValStore (TBD).
+ *    Call Chain.setKeyValueStore() to override the default key value store implementation.
+ *    For the default implementations, see FileKeyValueStore and SqlKeyValueStore (TBD).
  * 2) Pluggable member service which is used to register and enroll members.
  *    Call Chain.setMemberService() to override the default implementation.
  *    For the default implementation, see MemberServices.
@@ -1052,8 +1052,8 @@ function prepend(item:string, list:string[]) {
 
 
 /**
- * Create an instance of a FileKeyValStore.
+ * Create an instance of a FileKeyValueStore.
  */
-export function newFileKeyValStore(dir:string):KeyValStore {
-    return new FileKeyValStore(dir);
+export function newFileKeyValueStore(dir:string):KeyValueStore {
+    return new FileKeyValueStore(dir);
 }

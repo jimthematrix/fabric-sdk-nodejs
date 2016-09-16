@@ -50,7 +50,7 @@ var testChaincodeID;
 //  Create and configure a test chain
 //
 var chain = hfc.newChain("testChain");
-chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));
+chain.setKeyValueStore(hfc.newFileKeyValueStore('/tmp/keyValStore'));
 chain.setMemberServicesUrl("grpc://localhost:7054");
 chain.addPeer("grpc://localhost:7051");
 
