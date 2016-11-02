@@ -27,7 +27,7 @@ The following tests require setting up a local blockchain network as the target.
 * run `vagrant up` to launch the vagrant VM
 * Once inside vagrant, `cd $GOPATH/src/github.com/hyperledger/fabric`
 * run `make images` to build the docker images
-* copy [docker-compose.yml](./fixtures/docker-compose.yml) file in home directory (/home/vagrant) and copy the following content into the file
+* copy [docker-compose.yml](./test/fixtures/docker-compose.yml) file in home directory (/home/vagrant) and copy the following content into the file
 * run `docker-compose up --force-recreate` to launch the network
 * Back in your native host (MacOS, or Windows, or Ubuntu, etc), run the following tests:
   * Clear out your previous keyvalue store if needed (rm -fr /tmp/KeyValStore*)
